@@ -13,6 +13,8 @@ package spsmb.sqlite;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
 
 /**
  * Struktura tabulky:
@@ -20,6 +22,36 @@ import java.io.IOException;
  * 1ea976a2-896a-40b2-b617-b780a713323d,2020-03-01,43,M,CZ042,CZ0421,1,IT,1
  */
 public class FUkol {
+    public void createTable() {
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            //Class.forName("org.w32.sqlite.JDBC");
+            //c = DriverManager.getConnection("jdbc:w32.sqlite:SqliteJavaDB.db");
+            c = AMainDBConn.connect();
+            System.out.println("Database Opened...\n");
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE covid " +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " id2 TEXT NOT NULL, " +
+                    " datum TEXT NOT NULL," +
+                    " vek INT NOT NULL," +
+                    " pohlavi TEXT NOT NULL," +
+                    " kraj TEXT NOT NULL," +
+                    " okres TEXT NOT NULL," +
+                    " nakaza_v_zahranici BIT," +
+                    " stat TEXT," +
+                    " reportovano_khs BIT" +
+                    ") ";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Table Product Created Successfully!!!");
+    }
     public static void main(String[] args) throws IOException {
         FileReader fr = null;
         String radka;
