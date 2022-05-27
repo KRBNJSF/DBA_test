@@ -1,19 +1,12 @@
-package spsmb.sqlite;
+package spsmb.w32.sqlite;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import spsmb.Warehouse;
-import spsmb.sqlite.EWarehouseTableUtil;
 
-//run: VMOPtions: --module-path "Y:\stemberk\verejne_zaci\javafx-sdk-17.0.1\lib" --add-modules javafx.controls,javafx.fxml
-//Run -> Edit Configurations -> Alt+V (add VM Options line), Add --module-path /opt/javafx-sdk-17.0.2/lib --add-modules=javafx.controls
-// --module-path "C:\Users\stemb\IdeaProjects\javafx-sdk-17.0.2\lib" --add-modules javafx.controls,javafx.fxml
-// --module-path "X:\stemberk\verejne_zaci\javafx-sdk-17.0.1\lib"
-
-public class DShowData extends Application {
+public class ShowCovid extends Application {
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -21,12 +14,21 @@ public class DShowData extends Application {
     @Override
     public void start(Stage stage) {
         // Create a TableView with a list of persons
-        TableView<Warehouse> table = new TableView<>(EWarehouseTableUtil.getWarehouseList());
+        TableView<Covid> table = new TableView<>(CovidTableUtil.getCovidList());
 
         // Add columns to the TableView
-        table.getColumns().addAll(EWarehouseTableUtil.getIdColumn(),
-                EWarehouseTableUtil.getNameColumn(),
-                EWarehouseTableUtil.getCapacityColumn());
+        table.getColumns().addAll(
+                CovidTableUtil.getIdColumn(),
+                CovidTableUtil.getId2Column(),
+                CovidTableUtil.getDatumColumn(),
+                CovidTableUtil.getVekColumn(),
+                CovidTableUtil.getPohlaviColumn(),
+                CovidTableUtil.getKraj_nuts_kodColumn(),
+                CovidTableUtil.getOkres_lau_kodColumn(),
+                CovidTableUtil.getNakaza_v_zahraniciColumn(),
+                CovidTableUtil.getNakaza_zeme_csu_kodColumn(),
+                CovidTableUtil.getReportovano_khsColumn()
+        );
         VBox root = new VBox(table);
         root.setStyle("-fx-padding: 10;" +
                 "-fx-border-style: solid inside;" +
