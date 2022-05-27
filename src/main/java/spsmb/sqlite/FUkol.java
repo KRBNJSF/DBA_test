@@ -17,8 +17,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
-    /**
+/**
      * Struktura tabulky:
      * id,datum,vek,pohlavi,kraj_nuts_kod,okres_lau_kod,nakaza_v_zahranici,nakaza_zeme_csu_kod,reportovano_khs
      * 1ea976a2-896a-40b2-b617-b780a713323d,2020-03-01,43,M,CZ042,CZ0421,1,IT,1
@@ -54,7 +55,7 @@ public class FUkol {
         System.out.println("Table Product Created Successfully!!!");
     }
     public static  void insert(String id2, String datum, Integer vek, String pohlavi, String kraj_nuts_kod, String okres_lau_kod, Boolean nakaza_v_zahranici, String nakaza_zeme_csu_kod, Boolean reportovano_khs) {
-        String sql = "INSERT INTO Covid(id2, datum, vek, pohlavi, kraj_nuts_kod, okres_lau_kod, nakaza_v_zahranici, nakaza_v_zahranici, reportovano_khs)" +
+        String sql = "INSERT INTO Covid(id2, datum, vek, pohlavi, kraj_nuts_kod, okres_lau_kod, nakaza_v_zahranici, nakaza_zeme_csu_kod, reportovano_khs)" +
                 " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = AMainDBConn.connect();
@@ -74,30 +75,38 @@ public class FUkol {
         }
     }
     public static void main(String[] args) throws IOException {
-        FUkol.createTable();
         FileReader fr = null;
         String radka;
         int cnt = 0;
+        FUkol.createTable();
         fr = new FileReader("Y:\\stemberk\\verejne_zaci\\osoby.csv");
         BufferedReader br = new BufferedReader(fr);
-        while ((radka = br.readLine()) != null){
-
+        br.readLine(); // prvni radku zahodime;
+        while ((radka = br.readLine()) != null) {
+            String iu = "";
+            String datum = "";
+            int vek = 0;
+            String mf = "";
+            String kraj = "";
+            String okres = "";
+            boolean vZahranici = false;
+            String stat = "";
+            boolean reportovanoKhs = false;
             String[] hodnoty = radka.split(",");
-            System.out.println(radka);
-            System.out.format("%s -- %s %s %d %n", hodnoty[0], hodnoty[1], hodnoty[2], hodnoty.length);
-            if (cnt++ > 0) {
-                if (hodnoty.length > 6){
-                    FUkol.insert(hodnoty[0], hodnoty[1], Integer.parseInt(hodnoty[2]), hodnoty[3], hodnoty[4], hodnoty[5], Boolean.parseBoolean(hodnoty[6]), hodnoty[7], Boolean.parseBoolean(hodnoty[8]));
-                } else if(hodnoty.length < 6) {
-                    FUkol.insert(hodnoty[0], hodnoty[1], Integer.parseInt(hodnoty[2]), hodnoty[3], null, null, Boolean.FALSE, null, Boolean.FALSE);
-                }
-                else {
-                    FUkol.insert(hodnoty[0], hodnoty[1], Integer.parseInt(hodnoty[2]), hodnoty[3], hodnoty[4], hodnoty[5], Boolean.FALSE, null, Boolean.FALSE);
-                }
-            }
-            if (cnt > 150) break;
+            if (hodnoty.length > 0) iu = hodnoty[0];
+            if (hodnoty.length > 1) datum = hodnoty[1];
+            if (hodnoty.length > 2) vek = Integer.parseInt(hodnoty[2]);
+            if (hodnoty.length > 3) mf = hodnoty[3];
+            if (hodnoty.length > 4) kraj = hodnoty[4];
+            if (hodnoty.length > 5) okres = hodnoty[5];
+            if (hodnoty.length > 6) vZahranici = hodnoty[6].equals("1") ? true : false;
+            if (hodnoty.length > 7) stat = hodnoty[7];
+            if (hodnoty.length > 8) reportovanoKhs = hodnoty[8].equals("1") ? true : false;
+            System.out.printf("%s, %s, %d, %s, %s, %s, %b, %s, %b%n",
+                    iu, datum, vek, mf, kraj, okres, vZahranici, stat, reportovanoKhs);
+            FUkol.insert(iu, datum, vek, mf, kraj, okres, vZahranici, stat, reportovanoKhs);
+            if (cnt++ > 50) break;
         }
-
     }
 }
 
