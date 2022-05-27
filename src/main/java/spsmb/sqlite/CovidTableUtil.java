@@ -1,4 +1,4 @@
-package spsmb.w32.sqlite;
+package spsmb.sqlite;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 
 public class CovidTableUtil {
     public static ObservableList<Covid> getCovidList() {

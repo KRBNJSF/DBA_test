@@ -1,4 +1,4 @@
-package spsmb.w32.sqlite;
+package spsmb.sqlite;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
