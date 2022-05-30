@@ -18,16 +18,11 @@ public class ShowCovid extends Application {
 
         // Add columns to the TableView
         table.getColumns().addAll(
-                CovidTableUtil.getIdColumn(),
-                CovidTableUtil.getId2Column(),
-                CovidTableUtil.getDatumColumn(),
-                CovidTableUtil.getVekColumn(),
-                CovidTableUtil.getPohlaviColumn(),
-                CovidTableUtil.getKraj_nuts_kodColumn(),
-                CovidTableUtil.getOkres_lau_kodColumn(),
-                CovidTableUtil.getNakaza_v_zahraniciColumn(),
-                CovidTableUtil.getNakaza_zeme_csu_kodColumn(),
-                CovidTableUtil.getReportovano_khsColumn()
+                CovidTableUtil.getDatum(),
+                CovidTableUtil.getPrumer(),
+                CovidTableUtil.getMuzi(),
+                CovidTableUtil.getZeny(),
+                CovidTableUtil.getCelkem()
         );
         VBox root = new VBox(table);
         root.setStyle("-fx-padding: 10;" +

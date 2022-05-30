@@ -6,64 +6,25 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
+//datum, průměrný věk, počet mužů, počet žen, celkový počet
 
 public class Covid {
-    private final ReadOnlyIntegerWrapper id =
-            new ReadOnlyIntegerWrapper(this, "id", 0);
-    private final StringProperty id2 =
-            new SimpleStringProperty(this, "id2", null);
-    private final StringProperty datum =
-            new SimpleStringProperty(this, "datum", null);
-    private final IntegerProperty vek =
-            new SimpleIntegerProperty(this, "vek", 0);
-    private final StringProperty pohlavi =
-            new SimpleStringProperty(this, "pohlavi", null);
-    private final StringProperty kraj_nuts_kod =
-            new SimpleStringProperty(this, "kraj_nuts_kod", null);
-    private final StringProperty okres_lau_kod =
-            new SimpleStringProperty(this, "okres_lau_kod", null);
-    private final SimpleBooleanProperty nakaza_v_zahranici =
-            new SimpleBooleanProperty(this, "nakaza_v_zahranici");
-    private final StringProperty nakaza_zeme_csu_kod =
-            new SimpleStringProperty(this, "nakaza_zeme_csu_kod", null);
-    private final SimpleBooleanProperty reportovano_khs =
-            new SimpleBooleanProperty(this, "reportovano_khs");
+    private final StringProperty datum = new SimpleStringProperty(this, "datum", "1111-11-11");
+    private final DoubleProperty prumer_vek =
+            new SimpleDoubleProperty(this, "avg_vek", 0.0);
+    private final IntegerProperty pocet_muzi =
+            new SimpleIntegerProperty(this, "pocet_muzi", 0);
+    private final IntegerProperty pocet_zeny =
+            new SimpleIntegerProperty(this, "pocet_zen", 0);
+    private final IntegerProperty celkovy_pocet =
+            new SimpleIntegerProperty(this, "celkovy_pocet", 0);
 
-    public Covid(int id, String id2, String datum, int vek, String pohlavi, String kraj_nuts_kod, String okres_lau_kod, boolean nakaza_v_zahranici, String nakaza_zeme_csu_kod, boolean reportovano_khs) {
-        this.id.set(id);
-        this.id2.set(id2);
+    public Covid(String datum, double prumer_vek, int pocet_muzi, int pocet_zen, int celkovy_pocet) {
         this.datum.set(datum);
-        this.vek.set(vek);
-        this.pohlavi.set(pohlavi);
-        this.kraj_nuts_kod.set(kraj_nuts_kod);
-        this.okres_lau_kod.set(okres_lau_kod);
-        this.nakaza_v_zahranici.set(nakaza_v_zahranici);
-        this.nakaza_zeme_csu_kod.set(nakaza_zeme_csu_kod);
-        this.reportovano_khs.set(reportovano_khs);
-    }
-
-    public int getId() {
-        return id.get();
-    }
-
-    public ReadOnlyIntegerWrapper idProperty() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id.set(id);
-    }
-
-    public String getId2() {
-        return id2.get();
-    }
-
-    public StringProperty id2Property() {
-        return id2;
-    }
-
-    public void setId2(String id2) {
-        this.id2.set(id2);
+        this.prumer_vek.set(prumer_vek);
+        this.pocet_muzi.set(pocet_muzi);
+        this.pocet_zeny.set(pocet_zen);
+        this.celkovy_pocet.set(celkovy_pocet);
     }
 
     public String getDatum() {
@@ -74,92 +35,56 @@ public class Covid {
         return datum;
     }
 
-    public void setDatum(String date) {
-        this.datum.set(date);
+    public void setDatum(String datum) {
+        this.datum.set(datum);
     }
 
-    public int getVek() {
-        return vek.get();
+    public double getPrumer_vek() {
+        return prumer_vek.get();
     }
 
-    public IntegerProperty vekProperty() {
-        return vek;
+    public DoubleProperty prumer_vekProperty() {
+        return prumer_vek;
     }
 
-    public void setVek(int vek) {
-        this.vek.set(vek);
+    public void setPrumer_vek(double prumer_vek) {
+        this.prumer_vek.set(prumer_vek);
     }
 
-    public String getPohlavi() {
-        return pohlavi.get();
+    public int getPocet_muzi() {
+        return pocet_muzi.get();
     }
 
-    public StringProperty pohlaviProperty() {
-        return pohlavi;
+    public IntegerProperty pocet_muziProperty() {
+        return pocet_muzi;
     }
 
-    public void setPohlavi(String pohlavi) {
-        this.pohlavi.set(pohlavi);
+    public void setPocet_muzi(int pocet_muzi) {
+        this.pocet_muzi.set(pocet_muzi);
     }
 
-    public String getKraj_nuts_kod() {
-        return kraj_nuts_kod.get();
+    public int getPocet_zeny() {
+        return pocet_zeny.get();
     }
 
-    public StringProperty kraj_nuts_kodProperty() {
-        return kraj_nuts_kod;
+    public IntegerProperty pocet_zenyProperty() {
+        return pocet_zeny;
     }
 
-    public void setKraj_nuts_kod(String kraj_nuts_kod) {
-        this.kraj_nuts_kod.set(kraj_nuts_kod);
+    public void setPocet_zeny(int pocet_zeny) {
+        this.pocet_zeny.set(pocet_zeny);
     }
 
-    public String getOkres_lau_kod() {
-        return okres_lau_kod.get();
+    public int getCelkovy_pocet() {
+        return celkovy_pocet.get();
     }
 
-    public StringProperty okres_lau_kodProperty() {
-        return okres_lau_kod;
+    public IntegerProperty celkovy_pocetProperty() {
+        return celkovy_pocet;
     }
 
-    public void setOkres_lau_kod(String okres_lau_kod) {
-        this.okres_lau_kod.set(okres_lau_kod);
-    }
-
-    public boolean isNakaza_v_zahranici() {
-        return nakaza_v_zahranici.get();
-    }
-
-    public SimpleBooleanProperty nakaza_v_zahraniciProperty() {
-        return nakaza_v_zahranici;
-    }
-
-    public void setNakaza_v_zahranici(boolean nakaza_v_zahranici) {
-        this.nakaza_v_zahranici.set(nakaza_v_zahranici);
-    }
-
-    public String getNakaza_zeme_csu_kod() {
-        return nakaza_zeme_csu_kod.get();
-    }
-
-    public StringProperty nakaza_zeme_csu_kodProperty() {
-        return nakaza_zeme_csu_kod;
-    }
-
-    public void setNakaza_zeme_csu_kod(String nakaza_zeme_csu_kod) {
-        this.nakaza_zeme_csu_kod.set(nakaza_zeme_csu_kod);
-    }
-
-    public boolean isReportovano_khs() {
-        return reportovano_khs.get();
-    }
-
-    public SimpleBooleanProperty reportovano_khsProperty() {
-        return reportovano_khs;
-    }
-
-    public void setReportovano_khs(boolean reportovano_khs) {
-        this.reportovano_khs.set(reportovano_khs);
+    public void setCelkovy_pocet(int celkovy_pocet) {
+        this.celkovy_pocet.set(celkovy_pocet);
     }
 }
 

@@ -79,7 +79,7 @@ public class FUkol {
         String radka;
         int cnt = 0;
         FUkol.createTable();
-        fr = new FileReader("Y:\\stemberk\\verejne_zaci\\osoby.csv");
+        fr = new FileReader("X:\\stemberk\\verejne_zaci\\osoby.csv");
         BufferedReader br = new BufferedReader(fr);
         br.readLine(); // prvni radku zahodime;
         while ((radka = br.readLine()) != null) {

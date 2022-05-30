@@ -14,22 +14,21 @@ public class CovidTableUtil {
     public static ObservableList<Covid> getCovidList() {
         ObservableList<Covid> ret = FXCollections.<Covid>observableArrayList();
         Connection c = AMainDBConn.connect();
-        String sql = "SELECT * FROM Covid;";
+        String sql = "SELECT datum, AVG(vek) AS prumerny_vek," +
+                " (SELECT COUNT(*) FROM Covid AS c2 WHERE pohlavi LIKE 'M' AND c2.datum = c1.datum) AS pocet_muzi," +
+                " (SELECT COUNT(*) FROM Covid AS c2 WHERE pohlavi LIKE 'Z' AND c2.datum = c1.datum) AS pocet_zeny," +
+                " COUNT(*) AS celkovy_pocet" +
+                " FROM Covid AS c1 GROUP BY datum;";
         try (Statement st = c.createStatement()) {
             ResultSet rs = st.executeQuery(sql);
             int cnt = 0;
-            while(rs.next()) {
-                ret.add(new Covid(rs.getInt("id"),
-                        rs.getString("id2"),
-                        rs.getString("datum"),
-                        rs.getInt("vek"),
-                        rs.getString("pohlavi"),
-                        rs.getString("kraj_nuts_kod"),
-                        rs.getString("okres_lau_kod"),
-                        rs.getBoolean("nakaza_v_zahranici"),
-                        rs.getString("nakaza_zeme_csu_kod"),
-                        rs.getBoolean("reportovano_khs")));
-                System.out.format("id:%d, nakaza_v_zahranici:%b, nakaza_zeme_csu_kod:%s %n", rs.getInt("id"), rs.getBoolean("nakaza_v_zahranici"), rs.getString("nakaza_zeme_csu_kod"));
+            while (rs.next()) {
+                ret.add(new Covid(rs.getString("datum"),
+                        rs.getDouble("prumerny_vek"),
+                        rs.getInt("pocet_muzi"),
+                        rs.getInt("pocet_zeny"),
+                        rs.getInt("celkovy_pocet")));
+                //System.out.format("id:%d, nakaza_v_zahranici:%b, nakaza_zeme_csu_kod:%s %n", rs.getInt("id"), rs.getBoolean("nakaza_v_zahranici"), rs.getString("nakaza_zeme_csu_kod"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,64 +37,34 @@ public class CovidTableUtil {
         return ret; //FXCollections.<Warehouse>observableArrayList(p1);
     }
 
-    public static TableColumn<Covid, Integer> getIdColumn() {
-        TableColumn<Covid, Integer> personIdCol = new TableColumn<>("id");
-        personIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+    public static TableColumn<Covid, String> getDatum() {
+        TableColumn<Covid, String> personIdCol = new TableColumn<>("datum");
+        personIdCol.setCellValueFactory(new PropertyValueFactory<>("datum"));
         return personIdCol;
     }
 
-    public static TableColumn<Covid, String> getId2Column() {
-        TableColumn<Covid, String> fNameCol = new TableColumn<>("id2");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("id2"));
-        return fNameCol;
-    }
-
-    public static TableColumn<Covid, String> getDatumColumn() {
-        TableColumn<Covid, String> fNameCol = new TableColumn<>("datum");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        return fNameCol;
-    }
-
-    public static TableColumn<Covid, Integer> getVekColumn() {
-        TableColumn<Covid, Integer> personIdCol = new TableColumn<>("vek");
-        personIdCol.setCellValueFactory(new PropertyValueFactory<>("vek"));
+    public static TableColumn<Covid, Double> getPrumer() {
+        TableColumn<Covid, Double> personIdCol = new TableColumn<>("prumer_vek");
+        personIdCol.setCellValueFactory(new PropertyValueFactory<>("prumer_vek"));
         return personIdCol;
     }
 
-    public static TableColumn<Covid, String> getPohlaviColumn() {
-        TableColumn<Covid, String> fNameCol = new TableColumn<>("pohlavi");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("pohlavi"));
-        return fNameCol;
+    public static TableColumn<Covid, Integer> getMuzi() {
+        TableColumn<Covid, Integer> personIdCol = new TableColumn<>("pocet_muzi");
+        personIdCol.setCellValueFactory(new PropertyValueFactory<>("pocet_muzi"));
+        return personIdCol;
     }
 
-    public static TableColumn<Covid, String> getKraj_nuts_kodColumn() {
-        TableColumn<Covid, String> fNameCol = new TableColumn<>("kraj_nuts_kod");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("kraj_nuts_kod"));
-        return fNameCol;
+    public static TableColumn<Covid, Integer> getZeny() {
+        TableColumn<Covid, Integer> personIdCol = new TableColumn<>("pocet_zeny");
+        personIdCol.setCellValueFactory(new PropertyValueFactory<>("pocet_zeny"));
+        return personIdCol;
     }
 
-    public static TableColumn<Covid, String> getOkres_lau_kodColumn() {
-        TableColumn<Covid, String> fNameCol = new TableColumn<>("okres_lau_kod");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("okres_lau_kod"));
-        return fNameCol;
-    }
-
-    public static TableColumn<Covid, Boolean> getNakaza_v_zahraniciColumn() {
-        TableColumn<Covid, Boolean> fNameCol = new TableColumn<>("nakaza_v_zahranici");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("nakaza_v_zahranici"));
-        return fNameCol;
-    }
-
-    public static TableColumn<Covid, String> getNakaza_zeme_csu_kodColumn() {
-        TableColumn<Covid, String> fNameCol = new TableColumn<>("nakaza_zeme_csu_kod");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("nakaza_zeme_csu_kod"));
-        return fNameCol;
-    }
-
-    public static TableColumn<Covid, Boolean> getReportovano_khsColumn() {
-        TableColumn<Covid, Boolean> fNameCol = new TableColumn<>("reportovano_khs");
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("reportovano_khs"));
-        return fNameCol;
+    public static TableColumn<Covid, Integer> getCelkem() {
+        TableColumn<Covid, Integer> personIdCol = new TableColumn<>("celkovy_pocet");
+        personIdCol.setCellValueFactory(new PropertyValueFactory<>("celkovy_pocet"));
+        return personIdCol;
     }
 
 
